@@ -1,12 +1,13 @@
 package main
 
 import (
+	"encoding/gob"
 	"fmt"
 	"net"
 )
 
 func cliente() {
-	c, err := net.Dial("tcp", ":9999") // ip:puerto para conectarse al servido
+	c, err := net.Dial("tcp", ":9999")
 
 	if err != nil {
 		fmt.Println(err)
@@ -15,7 +16,10 @@ func cliente() {
 
 	msg := "Hola Mundo"
 	fmt.Println(msg)
-	c.Write([]byte(msg))
+	err = gob.NewEncoder(c).Encode(msg)
+	if err != nil {
+		fmt.Println(err)
+	}
 	c.Close()
 }
 
